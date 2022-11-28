@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Turco Dias Chat</title>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+
+<body background="bg_b.jpg">
+
+    <script type="text/javascript">
+    
+        $(document).ready(function(){
+            
+            var socket = io.connect("http://192.168.2.17:5000")
+            
+            socket.on('connect', function(){
+                socket.send('User connected!');
+            });
+
+            $('#send_message_Btn').on('click', function(){
+                socket.send($('#user_name').val() + ': ' + $('#message').val());
+                $('#message').val('');
+            });
+    
+            socket.on('message', function(data){
+                $('#message_history').append($('<p>').text(data));
+            });
+
+        });
+    
+    </script>
+    
+    <div id="message_history">
+    </div>   
+    
+    <div id="controls">
+        <input type="text" id="user_name" placeholder="User Name">
+        <input type="text" id="message" placeholder="Type a message here">
+        <button id="send_message_Btn"> Send Message </button>
+    </div>
+
+</body>
+</html>
